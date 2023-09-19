@@ -9,7 +9,7 @@
 
 <body>
     <h1>Rellena tu CV</h1>
-    <form action="index.php" method="post" enctype="multipart/form-data">
+    <form action="recogida.php" method="get" enctype="multipart/form-data">
         <p><label for="nombre">Nombre:</label></br>
             <input type="text" name="nombre" id="nombre">
             </br>
