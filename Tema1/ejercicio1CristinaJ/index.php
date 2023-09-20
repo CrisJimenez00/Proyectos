@@ -28,11 +28,11 @@
         </p>
         <p>Aficiones:
             <label for="deportes">Deportes</label>
-            <input type="checkbox" name="aficiones[]" id="deportes" value="deportes">
+            <input type="checkbox" name="deportes" id="deportes" value="deportes">
             <label for="lectura">Lectura</label>
-            <input type="checkbox" name="aficiones[]" id="lectura" value="lectura">
+            <input type="checkbox" name="lectura" id="lectura" value="lectura">
             <label for="otros">Otros</label>
-            <input type="checkbox" name="aficiones[]" id="otros" value="otros">
+            <input type="checkbox" name="otros" id="otros" value="otros">
         </p>
         <p>
             <label for="area">Comentarios:</label>
