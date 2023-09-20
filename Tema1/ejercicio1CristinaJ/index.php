@@ -32,7 +32,7 @@
             <label for="lectura">Lectura</label> 
             <input type="checkbox" name="aficiones[]" id="lectura" value="lectura">
             <label for="otros">Otros</label> 
-            <input type="checkbox" name="deportes[]" id="otros" value="otros">
+            <input type="checkbox" name="aficiones[]" id="otros" value="otros">
         </p>
         <p>
             <label for="area">Comentarios:</label>
