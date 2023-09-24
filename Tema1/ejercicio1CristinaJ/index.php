@@ -1,45 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+$error_form = false;
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario</title>
-</head>
+//Se comrpueban errores
+if (isset($_POST["btnGuardar"])) {
 
-<body>
-    <h1>Esta es mi super página</h1>
-    <form action="datos.php" method="post">
-        <p><label for="nombre">Nombre</label>
-            <input type="text" name="nombre" id="nombre">
-        </p>
-        <p>Nacido en:
-            <select name="nacimiento" id="nacimiento">
-                <option value="Málaga">Málaga</option>
-                <option value="Sevilla">Sevilla</option>
-                <option value="Cádiz" selected>Cádiz</option>
-            </select>
-        </p>
-        <p>Sexo</br>
-            <input type="radio" name="sexo" id="hombre" value="Hombre" />
-            <label for="hombre">Hombre</label></br>
-            <input type="radio" name="sexo" id="mujer" value="Mujer" />
-            <label for="mujer">Mujer</label>
-        </p>
-        <p>Aficiones:
-            <label for="deportes">Deportes</label>
-            <input type="checkbox" name="deportes" id="deportes" value="deportes">
-            <label for="lectura">Lectura</label>
-            <input type="checkbox" name="lectura" id="lectura" value="lectura">
-            <label for="otros">Otros</label>
-            <input type="checkbox" name="otros" id="otros" value="otros">
-        </p>
-        <p>
-            <label for="area">Comentarios:</label>
-            <textarea name="comentarios" id="area"></textarea>
-        </p>
-        <button type="submit" name="btnGuardar">Enviar</button>
-    </form>
-</body>
+    $error_nombre = $_POST["nombre"] == "";
+    $error_apellidos = $_POST["apellidos"] == "";
+    $error_clave = $_POST["clave"] == "";
+    $error_sexo = !isset($_POST["sexo"]);
+    $error_comentarios = $_POST["comentarios"] == "";
+    $error_form = $error_nombre || $error_apellidos || $error_clave || $error_sexo || $error_comentarios;
+}
 
-</html>
+//Si no hay errores en el formulario
+if (isset($_POST["btnGuardar"]) && !$error_form) {
+  require "vistas/vista_datos.php";
+} else {
+    require "vistas/vista_fomulario.php";
+}
+?>
