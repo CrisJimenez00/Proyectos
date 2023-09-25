@@ -114,7 +114,7 @@
             <label for="boletin">Suscribirme al boletín de Novedades</label>
         </p>
         <button type="submit" name="btnGuardar">Guardar Cambios</button>
-        <button type="reset" name="btnBorrar">Borrar los datos introducidos</button>
+        <button type="submit" name="btnBorrar">Borrar los datos introducidos</button>
     </form>
 </body>
 
