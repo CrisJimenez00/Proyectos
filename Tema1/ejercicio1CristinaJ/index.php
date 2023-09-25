@@ -5,11 +5,8 @@ $error_form = false;
 if (isset($_POST["btnGuardar"])) {
 
     $error_nombre = $_POST["nombre"] == "";
-    $error_apellidos = $_POST["apellidos"] == "";
-    $error_clave = $_POST["clave"] == "";
     $error_sexo = !isset($_POST["sexo"]);
-    $error_comentarios = $_POST["comentarios"] == "";
-    $error_form = $error_nombre || $error_apellidos || $error_clave || $error_sexo || $error_comentarios;
+    $error_form = $error_nombre || $error_sexo ;
 }
 
 //Si no hay errores en el formulario

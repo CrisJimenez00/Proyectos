@@ -10,7 +10,6 @@
 <body>
     <h1>Datos recogidos</h1>
     <?php
-    if (isset($_POST["btnGuardar"])) {
         echo "<p><strong>Nombre: </strong>" . $_POST["nombre"] . "</p>";
         echo "<p><strong>Nacimiento: </strong>" . $_POST["nacimiento"] . "</p>";
         //Con checkbox y radio si no existe peta el programa, se tiene que usar isset si o si
@@ -21,6 +20,7 @@
         }
         //Forma simple, no sé recorrer aficiones[] para que me diga lo que contiene
         echo "<p><strong>Aficiones: </strong>";
+        //la forma más básica
         /*if (isset($_POST["deportes"])) {
             echo $_POST["deportes"] . ",";
         } 
@@ -30,8 +30,6 @@
          if (isset($_POST["otros"])) {
             echo $_POST["otros"] ;
         }*/
-        echo "<p><strong>Aficiones:</strong></p>";
-
         if (isset($_POST["deportes"]) || isset($_POST["lectura"]) || isset($_POST["otros"])) {
             echo "<ol>";
 
@@ -50,10 +48,13 @@
             echo "<p><b>No has seleccionado ninguna afición</b></p>";
         }
         echo "</p>";
-        echo "<p><strong>Comentarios: </strong>" . $_POST["comentarios"] . "</p>";
-    } else {
-        header("Location:index.php");
-    }
+        if($_POST["comentarios"]!= ""){
+            echo "<p><strong>Comentarios: </strong>" . $_POST["comentarios"] . "</p>";
+        }else{
+            echo "<p><strong>No ha hecho ningún comentario </strong></p>";
+        }
+        
+    
     ?>
 </body>
 

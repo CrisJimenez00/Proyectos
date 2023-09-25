@@ -5,14 +5,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario</title>
+    <style>
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Esta es mi super página</h1>
-    <form action="datos.php" method="post">
+    <form action="index.php" method="post">
         <p><label for="nombre">Nombre</label>
-            <input type="text" name="nombre" id="nombre">
+            <input type="text" name="nombre" id="nombre" value="<?php
+                                                                if (isset($_POST["nombre"])) {
+                                                                    echo $_POST["nombre"];
+                                                                }
+                                                                ?>">
+            <?php
+            if (isset($_POST["btnGuardar"]) && $error_nombre) {
+                echo "<span class='error'>Campo vacio</span>";
+            }
+            ?>
         </p>
+
         <p>Nacido en:
             <select name="nacimiento" id="nacimiento">
                 <option value="Málaga">Málaga</option>
@@ -20,7 +36,14 @@
                 <option value="Cádiz" selected>Cádiz</option>
             </select>
         </p>
-        <p>Sexo</br>
+        <p>Sexo
+            <?php
+            if (isset($_POST["btnGuardar"]) && $error_sexo) {
+                echo "<span class='error'>Seleccione un sexo</span>";
+            }
+            ?>
+            </br>
+
             <input type="radio" name="sexo" id="hombre" value="Hombre" />
             <label for="hombre">Hombre</label></br>
             <input type="radio" name="sexo" id="mujer" value="Mujer" />
