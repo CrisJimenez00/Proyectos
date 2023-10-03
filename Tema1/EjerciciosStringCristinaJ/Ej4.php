@@ -93,8 +93,6 @@ function es_correcto_romano($texto)
 </head>
 
 <body>
-
-
     <form action="Ej4.php" method="post">
         <h1>Romanos a árabes-Formulario</h1>
         <p>Dime una número y lo convertiré en cifras árabes</p>
