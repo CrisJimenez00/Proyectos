@@ -43,7 +43,22 @@
             </br>
             <label for="dni">DNI:</label>
             </br>
-            <input type="text" name="dni" id="dni" />
+            <input type="text" name="dni" id="dni" placeholder="DNI:11223344Z" value="<?php
+                                                                                        if (isset($_POST["dni"])) {
+                                                                                            echo $_POST["dni"];
+                                                                                        }
+                                                                                        ?>" />
+            <?php
+            if (isset($_POST["btnGuardar"]) && $error_dni) {
+                if ($_POST["dni"] == "") {
+                    echo "<span class='error'>No puede dejar el campo vacío</span>";
+                } else if (!dni_bien_escrito(strtoupper($_POST["dni"]))) {
+                    echo "<span class='error'>El DNI no está bien escrito</span>";
+                } else {
+                    echo "<span class='error'>DNI no válido</span>";
+                }
+            }
+            ?>
             </br>
             <label for="clave">Contraseña:</label>
             </br>
