@@ -54,22 +54,27 @@ if (isset($_POST["btnGuardar"])) {
     <?php
     if (isset($_POST['submit'])&&!$error_formulario) {
         $palabra = $_POST['palabra'];
+        //vocal A
         $palabra = str_replace('á', 'a', $palabra);
         $palabra = str_replace('Á', 'A', $palabra);
         $palabra = str_replace('ä', 'a', $palabra);
         $palabra = str_replace('Ä', 'A', $palabra);
+        //Vocal E
         $palabra = str_replace('é', 'e', $palabra);
         $palabra = str_replace('É', 'E', $palabra);
         $palabra = str_replace('ë', 'e', $palabra);
         $palabra = str_replace('Ë', 'E', $palabra);
+        //Vocal I
         $palabra = str_replace('í', 'i', $palabra);
         $palabra = str_replace('Í', 'I', $palabra);
         $palabra = str_replace('ï', 'i', $palabra);
         $palabra = str_replace('Ï', 'I', $palabra);
+        //Vocal O
         $palabra = str_replace('ó', 'o', $palabra);
         $palabra = str_replace('Ó', 'O', $palabra);
         $palabra = str_replace('ö', 'o', $palabra);
         $palabra = str_replace('Ö', 'O', $palabra);
+        //Vocal U
         $palabra = str_replace('ú', 'u', $palabra);
         $palabra = str_replace('Ú', 'U', $palabra);
         $palabra = str_replace('ü', 'u', $palabra);
