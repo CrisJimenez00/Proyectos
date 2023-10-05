@@ -19,7 +19,7 @@
         echo "<p><strong>Sexo: </strong> No seleccionado</p>";
     }
     //Forma simple, no sé recorrer aficiones[] para que me diga lo que contiene
-    
+
     //la forma más básica
     /*if (isset($_POST["deportes"])) {
             echo $_POST["deportes"] . ",";
@@ -45,29 +45,50 @@
         }
         echo "</ol>";
     }
-    /*if (isset($_POST["Deportes"]) || isset($_POST["Lectura"]) || isset($_POST["Otros"])) {
-            echo "<ol>";
-
-            if (isset($_POST["Deportes"])) {
-                echo "<li>Deportes</li>";
-            }
-            if (isset($_POST["Lectura"])) {
-                echo "<li>Lectura</li>";
-            }
-            if (isset($_POST["Otros"])) {
-                echo "<li>Otros</li>";
-            }
-
-            echo "</ol>";
-        } else {
-            echo "<p><b>No has seleccionado ninguna afición</b></p>";
-        }*/
     echo "</p>";
+
+    //creamos una variable donde creemos un nombre único(asegurandonos usando doble uniqid) y lo descriframos con md5 por seguridad
+    $nombre_nuevo = md5(uniqid(uniqid(), true));
+
+    //Separamos el nombre del archivo en un array de dos partes según la separación que deja el nombre separado por puntos
+    $array_nombre = explode(".", $_FILES["archivo"]["name"]);
+
+    //Creamos una variable vacía para almarcenar el tipo de extension
+    $ext = "";
+
+    //Contamos que el array tenga más de una parte(Es decir que como mínimo tenga nombre y extensión)
+    if (count($array_nombre) > 1) {
+
+        //Almacenamos la última parte del array(donde se situaría la extension) y la alamacenamos en la variable extensión
+        $ext = "." . end($array_nombre);
+    }
+    //le creamos un nombre nuevo añadiendo la extensión que hemos almacenado anteriormente
+    $nombre_nuevo .= $ext;
+
+    //Se usa este método para mover todos los archivos a la acarpeta que deseamos con el nombre que deseamos
+    //Si usamos @$var nos ahorramos tener que darle permisos al archivo para subir archivos(no lo va a mover, pero no explota ya)
+    //No nos podemos olvidar de darle permisos al archivo desde la terminal con la sentencia:
+    //sudo chmod 777 -R *Inserte nombre carpeta*
+    @$var = move_uploaded_file($_FILES["archivo"]["tmp_name"], "images/" . $nombre_nuevo);
+    if ($var) {
+        echo "<h3>Info Foto</h3>";
+        echo "<p><strong>Nombre: </strong>" . $_FILES["archivo"]["name"] . "</p>";
+        echo "<p><strong>Tipo: </strong>" . $_FILES["archivo"]["type"] . "</p>";
+        echo "<p><strong>Tamaño: </strong>" . $_FILES["archivo"]["size"] . "</p>";
+        echo "<p><strong>Error: </strong>" . $_FILES["archivo"]["error"] . "</p>";
+        echo "<p><strong>Nombre temporal: </strong>" . $_FILES["archivo"]["tmp_name"] . "</p>";
+        echo "<p>La imagen ha sido subida con éxito</p>";
+        echo "<p><img class='tam_img' src='images/" . $nombre_nuevo . "' alt='foto' title='foto'/></p>";
+    } else {
+        echo "No se ha podido mover la imagen al destino deseado";
+    }
+
     if ($_POST["comentarios"] != "") {
         echo "<p><strong>El comentario ha sido: </strong>" . $_POST["comentarios"] . "</p>";
     } else {
         echo "<p><strong>No ha hecho ningún comentario </strong></p>";
     }
+
     ?>
 </body>
 

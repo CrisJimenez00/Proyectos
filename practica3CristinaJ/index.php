@@ -36,7 +36,8 @@ if (isset($_POST["btnGuardar"])) {
   $error_dni = $_POST["dni"] == "" || !dni_bien_escrito(strtoupper($_POST["dni"])) || !dni_valido(strtoupper($_POST["dni"]));
   $error_sexo = !isset($_POST["sexo"]);
   $error_comentarios = $_POST["comentarios"] == "";
-  $error_form = $error_nombre || $error_apellidos || $error_clave || $error_dni || $error_sexo || $error_comentarios;
+  $error_archivo = $_FILES["archivo"]["name"] != "" &&( $_FILES["archivo"]["error"] || !getimagesize($_FILES["archivo"]["tmp_name"]) || $_FILES["archivo"]["size"] > 500 * 1024);
+  $error_form = $error_nombre || $error_apellidos || $error_clave || $error_dni || $error_sexo || $error_comentarios||$error_archivo;
 }
 //resetea el formulario como si fuera desde 0 
 if (isset($_POST["btnBorrar"])) {

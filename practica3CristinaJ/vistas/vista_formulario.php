@@ -92,7 +92,7 @@
         </p>
         <p>
             <label for="foto">Incluir mi foto:</label>
-            <input type="file" name="foto" id="foto" accept="image/*">
+            <input type="file" name="archivo" id="foto" accept="image/*">
         </p>
         <p>Nacido en:
             <select name="nacimiento" id="nacimiento">
