@@ -93,6 +93,8 @@ if (isset($_POST["btnEnviar"]) && !$error_archivo) {
                 <label for="archivo">Seleccione un archivo</label>
                 <input type="file" name="archivo" id="archivo" accept="image/*">
                 <?php
+                //La condición de $error_archivo es redundante debido a que solamente se pasa si 
+                //no hay errores(si sigues en la página significa que hay errores)
                 if (isset($_POST["btnEnviar"]) && $error_archivo) {
                     if ($_FILES["archivo"]["name"] != "") {
 
