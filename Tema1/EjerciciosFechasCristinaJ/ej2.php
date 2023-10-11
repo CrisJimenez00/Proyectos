@@ -47,30 +47,76 @@ if (isset($_POST["btnCalcular"])) {
 </head>
 
 <body>
-    <form action="ej1.php" method="post">
-        <p><label for="fecha1">Introduzca una fecha(DD/MM/YYYY):</label>
-            <input type="text" name="fecha1" id="fecha1" value="<?php
-                                                                if (isset($_POST["fecha1"])) {
-                                                                    echo $_POST["fecha1"];
-                                                                }
-                                                                ?>">
-            <!--Errores en el input fecha1-->
-            <?php
-            if (isset($_POST["btnCalcular"]) && $error_fecha1) {
-                if ($_POST["fecha1"] == "") {
-                    echo "<span class='error'>Campo vacío</span>";
-                } else {
-                    echo "<span class='error'>Fecha no válida</span>";
+    <form action="ej2.php" method="post">
+        <p>Introduzca una fecha:
+        <p>Día:
+            <select name="dia1">
+                <?php
+                for ($i = 1; $i <= 31; $i++) {
+                    echo "<option value='$i'>$i</option>";
                 }
-            }
-            ?>
+                ?>
+            </select>
+            Mes:
+            <select name="mes1">
+                <?php
+                for ($i = 1; $i <= 12; $i++) {
+                    $fecha = DateTime::createFromFormat('!m', $i);
+                    $mes = strftime("%B", $fecha->getTimestamp());
+                    echo "<option value='$i'>$mes</option>";
+                }
+                ?>
+            </select>
+            Año:
+            <select name="anyo1">
+                <?php
+                for ($i = 1970; $i <= 2023; $i++) {
+                    
+                    echo "<option value='$i'>$i</option>";
+                }
+                ?>
+            </select>
         </p>
-        <p><label for="fecha2">Introduzca una fecha(DD/MM/YYYY):</label>
-            <input type="text" name="fecha2" id="fecha2" value="<?php
-                                                                if (isset($_POST["fecha2"])) {
-                                                                    echo $_POST["fecha2"];
-                                                                }
-                                                                ?>">
+        <!--Errores en el input fecha1-->
+        <?php
+        if (isset($_POST["btnCalcular"]) && $error_fecha1) {
+            if ($_POST["fecha1"] == "") {
+                echo "<span class='error'>Campo vacío</span>";
+            } else {
+                echo "<span class='error'>Fecha no válida</span>";
+            }
+        }
+        ?>
+        </p>
+        <p><label for="fecha2">Introduzca una fecha:</label>
+        <p>Día:
+            <select name="dia2">
+                <?php
+                for ($i = 1; $i <= 31; $i++) {
+                    echo "<option value='$i'>$i</option>";
+                }
+                ?>
+            </select>
+            Mes:
+            <select name="mes2">
+                <?php
+                for ($i = 1; $i <= 12; $i++) {
+                    $fecha = DateTime::createFromFormat('!m', $i);
+                    $mes = strftime("%B", $fecha->getTimestamp());
+                    echo "<option value='$i'>$mes</option>";
+                }
+                ?>
+            </select>
+            Año:
+            <select name="anyo2">
+                <?php
+                for ($i = 1970; $i <= 2023; $i++) {
+                    
+                    echo "<option value='$i'>$i</option>";
+                }
+                ?>
+            </select>
+        </p>
             <!--Errores en el input fecha2-->
             <?php
             if (isset($_POST["btnCalcular"]) && $error_fecha2) {
