@@ -1,22 +1,7 @@
 <?php
-//Funcion que comprueba que se separa correctamente por / todo
-function buenos_separadores($texto)
-{
-    return substr($texto, 2, 1) == "/" && substr($texto, 5, 1) == "/";
-}
-//Funcion que comprueba que todos los valores entre / son numéricos
-function numeros_buenos($texto)
-{
-    return is_numeric(substr($texto, 0, 2)) && is_numeric(substr($texto, 3, 2)) && is_numeric(substr($texto, 6, 4));
-}
-//Función que comprueba que la fecha introducida en el input es válida
-function fecha_valida($texto)
-{
-    return checkdate(substr($texto, 3, 2), substr($texto, 0, 2), substr($texto, 6, 4));
-}
 if (isset($_POST["btnCalcular"])) {
-    $error_fecha1 = $_POST["fecha1"] == "" || strlen($_POST["fecha1"]) != 10 || !buenos_separadores($_POST["fecha1"]) || !numeros_buenos($_POST["fecha1"]) || !fecha_valida($_POST["fecha1"]);
-    $error_fecha2 = $_POST["fecha2"] == "" || strlen($_POST["fecha2"]) != 10 || !buenos_separadores($_POST["fecha2"]) || !numeros_buenos($_POST["fecha2"]) || !fecha_valida($_POST["fecha2"]);
+    $error_fecha1 = !checkdate($_POST["mes1"], $_POST["dia1"], $_POST["anyo1"]);
+    $error_fecha2 = !checkdate($_POST["mes2"], $_POST["dia2"], $_POST["anyo2"]);
     $error_formulario = $error_fecha1 || $error_fecha2;
 }
 ?>
@@ -53,7 +38,11 @@ if (isset($_POST["btnCalcular"])) {
             <select name="dia1">
                 <?php
                 for ($i = 1; $i <= 31; $i++) {
-                    echo "<option value='$i'>$i</option>";
+                    if (isset($_POST["btnCalcular"]) && $_POST["dia1"] == $i) {
+                        echo "<option value='$i' selected>$i</option>";
+                    } else {
+                        echo "<option value='$i'>$i</option>";
+                    }
                 }
                 ?>
             </select>
@@ -63,7 +52,11 @@ if (isset($_POST["btnCalcular"])) {
                 for ($i = 1; $i <= 12; $i++) {
                     $fecha = DateTime::createFromFormat('!m', $i);
                     $mes = strftime("%B", $fecha->getTimestamp());
-                    echo "<option value='$i'>$mes</option>";
+                    if (isset($_POST["btnCalcular"]) && $_POST["mes1"] == $i) {
+                        echo "<option value='$i' selected>$mes</option>";
+                    } else {
+                        echo "<option value='$i'>$mes</option>";
+                    }
                 }
                 ?>
             </select>
@@ -71,8 +64,11 @@ if (isset($_POST["btnCalcular"])) {
             <select name="anyo1">
                 <?php
                 for ($i = 1970; $i <= 2023; $i++) {
-                    
-                    echo "<option value='$i'>$i</option>";
+                    if (isset($_POST["btnCalcular"]) && $_POST["anyo1"] == $i) {
+                        echo "<option value='$i' selected>$i</option>";
+                    } else {
+                        echo "<option value='$i'>$i</option>";
+                    }
                 }
                 ?>
             </select>
@@ -80,11 +76,8 @@ if (isset($_POST["btnCalcular"])) {
         <!--Errores en el input fecha1-->
         <?php
         if (isset($_POST["btnCalcular"]) && $error_fecha1) {
-            if ($_POST["fecha1"] == "") {
-                echo "<span class='error'>Campo vacío</span>";
-            } else {
-                echo "<span class='error'>Fecha no válida</span>";
-            }
+
+            echo "<span class='error'>Fecha no válida</span>";
         }
         ?>
         </p>
@@ -93,7 +86,11 @@ if (isset($_POST["btnCalcular"])) {
             <select name="dia2">
                 <?php
                 for ($i = 1; $i <= 31; $i++) {
-                    echo "<option value='$i'>$i</option>";
+                    if (isset($_POST["btnCalcular"]) && $_POST["dia2"] == $i) {
+                        echo "<option value='$i' selected>$i</option>";
+                    } else {
+                        echo "<option value='$i'>$i</option>";
+                    }
                 }
                 ?>
             </select>
@@ -103,7 +100,11 @@ if (isset($_POST["btnCalcular"])) {
                 for ($i = 1; $i <= 12; $i++) {
                     $fecha = DateTime::createFromFormat('!m', $i);
                     $mes = strftime("%B", $fecha->getTimestamp());
-                    echo "<option value='$i'>$mes</option>";
+                    if (isset($_POST["btnCalcular"]) && $_POST["mes2"] == $i) {
+                        echo "<option value='$i' selected>$mes</option>";
+                    } else {
+                        echo "<option value='$i'>$mes</option>";
+                    }
                 }
                 ?>
             </select>
@@ -111,40 +112,40 @@ if (isset($_POST["btnCalcular"])) {
             <select name="anyo2">
                 <?php
                 for ($i = 1970; $i <= 2023; $i++) {
-                    
-                    echo "<option value='$i'>$i</option>";
+
+                    if (isset($_POST["btnCalcular"]) && $_POST["anyo2"] == $i) {
+                        echo "<option value='$i' selected>$i</option>";
+                    } else {
+                        echo "<option value='$i'>$i</option>";
+                    }
                 }
                 ?>
             </select>
-        </p>
+
             <!--Errores en el input fecha2-->
             <?php
             if (isset($_POST["btnCalcular"]) && $error_fecha2) {
-                if ($_POST["fecha2"] == "") {
-                    echo "<span class='error'>Campo vacío</span>";
-                } else {
-                    echo "<span class='error'>Fecha no válida</span>";
-                }
+
+                echo "<span class='error'>Fecha no válida</span>";
             }
             ?>
+        </p>
         </p>
         <button type="submit" name="btnCalcular">Calcular</button>
     </form>
     <?php
     if (isset($_POST["btnCalcular"]) && !$error_formulario) {
-        $fecha1 = explode("/", $_POST["fecha1"]);
-        $fecha2 = explode("/", $_POST["fecha2"]);
-        $tiempo1 = mktime(0, 0, 0, $fecha1[1], $fecha1[0], $fecha1[2]);
-        $tiempo2 = mktime(0, 0, 0, $fecha2[1], $fecha2[0], $fecha2[2]);
-        /*$tiempo1=strtotime($fecha1[2]."/".$fecha1[0]."/".$fecha1[2]);
-        $tiempo2=strtotime($fecha2[2]."/".$fecha2[0]."/".$fecha2[2]);*/
-        $dif_segundos = abs($tiempo1 - $tiempo2);
-        $dias_pasados = floor($dif_segundos / (60 * 60 * 24));
+        $seg1 = mktime(0, 0, 0, $_POST["mes1"], $_POST["dia1"], $_POST["anyo1"]);
+        $seg2 = mktime(0, 0, 0, $_POST["mes2"], $_POST["dia2"], $_POST["anyo2"]);
+
+        $dias = ($seg1 - $seg2) / (3600 * 24);
+
+        $dias_pasados = abs(floor($dias));
         echo "<br/>";
         echo "<br/>";
         echo "<div class='verdoso'>";
         echo "<h1>Fechas-Resultado</h1>";
-        echo "<p>Las diferencias entre las dos fechas es de: <strong>$dias_pasados</strong></p>";
+        echo "<p>Las diferencias entre las dos fechas es de: <strong>$dias_pasados días</strong></p>";
         echo "</div>";
     }
     ?>
