@@ -18,14 +18,18 @@
         die("No se ha podido abrir el fichero prueba.txt");
     } else {
         echo "Ha entrado";
+        //con el comando fgets se recoge línea por línea
         $linea = fgets($fd1);
-        //te vas a la primera línea del fichero
+        //te vas a la primera línea del fichero con este método(despues de la , pones la línea en la que quieres qu ese encuentre)
         fseek($fd1, 0);
+        //Se hace un do while
         while ($linea = fgets($fd1)) {
             echo "<p>$linea</p>";
         }
+        //método el cual te escribe en el fichero una línea en específico
         fwrite($fd1, "Texto random");
 
+        //Método el cual cierra el fichero, es obligatorio
         fclose($fd1);
     }
     /*if(!$fd3){
