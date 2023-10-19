@@ -1,68 +1,121 @@
-<?php
 
-?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio 5 ficheros</title>
+    <title>Ejercicio 6 Fich. Texto</title>
     <style>
-        table,tr,td,th{
+           table,
+        td,
+        th {
             border: 1px solid black;
-            border-collapse: collapse;
-            padding: 0.5em;
+            text-align: center;
         }
-        </style>
+
+        table {
+            border-collapse: collapse;
+            width: 90%;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
 <body>
-    <h2>Mostrar tabla</h2>
+    <h1>Ejercicio 6</h1>
+    <?php
+    // URL del archivo de datos
+    $ruta = 'http://dwese.icarosproject.com/PHP/datos_ficheros.txt';
+    $fd = fopen($ruta, "r");
+    if (!$fd) {
+        die("<p>No se ha podido crear el fichero " . $ruta . "</p>");
+    }
+
+    //aqui todas y cada una de las filas
+  $primera_linea=fgets($fd); //me salto la primera linea
+    
+  
+    while ($linea = fgets($fd)) {
+        $datos_linea = explode("\t", $linea);
+        //echo var_dump($datos_linea);
+        $datos_primera_col= explode(",", $datos_linea[0]);
+        $paises[]=$datos_primera_col[2];
+
+
+        //aqui podriamos preguntar si ha echo submit y ocurre algo...
+        //entonces me guardo la linea de nuevo
+
+        if(isset($_POST["pais"]) && $_POST["pais"]==$datos_primera_col[2])
+        {
+            $datos_pais_seleccionado=$datos_linea;
+        }
+
+                  
+        
+    }
+
+    fclose($fd);
+    
+    ?>
+    <form action="Ej6.php" method="post" enctype="multipart/form-data">
+        <p>
+            <label for="pais">Seleccione un país</label>
+            <select name="pais" id="pais">
+                <?php
+                for ($i=0; $i <count($paises) ; $i++) { 
+
+                    if(isset($_POST["pais"]) && $_POST["pais"]==$paises[$i])
+                       
+                        echo "<option selected value='".$paises[$i]."'>".$paises[$i]."</option>";
+                    else 
+                        echo "<option value='".$paises[$i]."'>".$paises[$i]."</option>";
+                   
+                }
+
+                ?>
+            </select>
+        </p>
+
+        <p>
+            <button type="submit" name="btnBuscar">Buscar</button>
+
+        </p>
+
+    </form>
 
     <?php
-    $count_linea = 1;
-    @$fd = fopen("http://dwese.icarosproject.com/PHP/datos_ficheros.txt", "r");
-    if (!$fd) {
-        echo "<p>No se ha podido abrir bien el archivo</p>";
-    } else {
+    if(isset($_POST["btnBuscar"])){
+        echo "<h2>PIB per cápita de ".$_POST["pais"]."</h2>";
+        $datos_primera_fila= explode("\t", $primera_linea);
+        //me quedo con los años
+        $n_anios=count($datos_primera_fila)-1;
+
         echo "<table>";
-        $linea = fgets($fd);
+        echo "<tr>";//primera fila
 
-        $datos_linea = explode("\t", $linea);
-        $n_col = count($datos_linea);
-        echo "<tr>";
-        for ($i = 0; $i < $n_col; $i++) {
-            $division2 = explode(",", $datos_linea[0]);
-            if ($i == 0) {
-                echo "<th>" . $division2[2] . "</th>";
-            } else {
-                echo "<th>" . $datos_linea[$i] . "</th>";
-            }
+             
+        for ($i=0; $i <=$n_anios; $i++) { 
+            echo "<th>".$datos_primera_fila[$i]."</th>";  
         }
-        echo "</tr>";
+         echo "</tr>";  
+         echo "<tr>";//pais que seleccionamos
 
-        while ($linea = fgets($fd)) {
-            if ($count_linea == 1) {
-                $count_linea++;
-            } else {
-                $division = explode("\t", $linea);
-                echo "<tr>";
-                for ($i = 0; $i < count($division); $i++) {
-                    if ($i == 0) {
-                        $division2 = explode(",", $division[$i]);
-                        echo "<th>" . end($division2) . "</th>";
-                        $i++;
-                    }
-                    echo "<td>" . $division[$i] . "</td>";
-                }
-                echo "</tr>";
-            }
+             
+        for ($i=0; $i <=$n_anios; $i++) { 
+            if(isset($datos_pais_seleccionado[$i]))
+                echo "<td>".$datos_pais_seleccionado[$i]."</td>"; 
+            else
+                echo "<td></td>" ;
         }
+         echo "</tr>";  
+
         echo "</table>";
+
+        
     }
-    fclose($fd);
     ?>
+
 </body>
 
 </html>
