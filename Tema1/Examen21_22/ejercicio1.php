@@ -1,9 +1,11 @@
 <?php
-    if(isset($_POST["texto"])){
-        $error_form=$_POST["texto"]=="";
-    }
     function contador($texto){
-        
+        $contador=0;
+        //Mientras exista la posición de $texto
+        while(isset($texto[$contador])){
+            $contador++;
+        }
+        return $contador;
     }
 ?>
 <!DOCTYPE html>
@@ -23,6 +25,11 @@
                                                             } ?>">
         <button type="submit" name="btnCalcular">Calcular</button>
     </form>
+    <?php
+    if(isset($_POST["btnCalcular"])){
+        echo "La longitud del texto introducido es de: <strong>". contador($_POST["texto"])." </strong>letras";
+    }
+    ?>
 </body>
 
 </html>
