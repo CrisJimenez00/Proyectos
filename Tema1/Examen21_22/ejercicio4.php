@@ -87,9 +87,9 @@ function mi_explode($sep,$texto){
             echo "<h3>No se ha podido mover a la carpeta destino</h3>";
         }
     }
-
+    //Aquí abrimos el archivo para leerlo
     @$fd =fopen("Horario/horarios.txt","r");
-
+    //Si existe ejecuta esta parte
     if($fd){
         echo "<h2>Horario de los profesores</h2>";
 
@@ -129,6 +129,7 @@ function mi_explode($sep,$texto){
             # code...
         }
         
+    //Si no existe ejecuta esta parte del código
     }else{
         ?>
         <h2>No se encuentra el archivo <em>Horario/horarios.txt</em></h2>
