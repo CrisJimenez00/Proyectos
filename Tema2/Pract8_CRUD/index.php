@@ -62,7 +62,7 @@
         <button type="submit" name="btnNuevoUsuario">Nuevo usuario</button>
     </form>
     <?php
-
+    mysqli_free_result($resultado);
     //Nos aseguramos que después cierre la conexión
     mysqli_close($conexion);
     ?>
