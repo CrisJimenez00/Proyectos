@@ -1,72 +1,173 @@
+<?php
+require "src/ctes_funciones.php";
+
+if (isset($_POST["btnContBorrar"])) {
+    try {
+        $conexion = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+        mysqli_set_charset($conexion, "utf8");
+    } catch (Exception $e) {
+        die(error_page("Práctica 1º CRUD", "<h1>Listado de los usuarios</h1><p>No ha podido conectarse a la base de batos: " . $e->getMessage() . "</p>"));
+    }
+
+    try {
+        $consulta = "delete from usuarios where id_usuario='" . $_POST["btnContBorrar"] . "'";
+        mysqli_query($conexion, $consulta);
+    } catch (Exception $e) {
+        mysqli_close($conexion);
+        die(error_page("Práctica 1º CRUD", "<h1>Listado de los usuarios</h1><p>No ha podido conectarse a la base de batos: " . $e->getMessage() . "</p>"));
+    }
+
+    mysqli_close($conexion);
+    header("Location:index.php");
+    exit();
+}
+
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ejercicio crud</title>
+    <title>Práctica 1º CRUD</title>
     <style>
         table,
-        th,
-        td {
-            border: 1px solid black;
+        td,
+        th {
+            border: 1px solid black
         }
 
         table {
             border-collapse: collapse;
-            text-align: center;
+            text-align: center
         }
 
         th {
-            background-color: #CCC;
+            background-color: #CCC
         }
-        table img{width: 7rem;}
+
+        table img {
+            width: 50px;
+        }
+
+        .enlace {
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline
+        }
     </style>
 </head>
 
 <body>
     <h1>Listado de los usuarios</h1>
     <?php
-    //realizamos la conexión
-    try {
-        $conexion = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
-        mysqli_set_charset($conexion, "utf8");
-    } catch (Exception $e) {
-        die("<p>No ha podido conectarse a la base de datos: " . $e->getMessage() . "</p>");
+    if (!isset($conexion)) {
+        try {
+            $conexion = mysqli_connect("localhost", "jose", "josefa", "bd_foro");
+            mysqli_set_charset($conexion, "utf8");
+        } catch (Exception $e) {
+            die("<p>No ha podido conectarse a la base de batos: " . $e->getMessage() . "</p></body></html>");
+        }
     }
 
-    //Momento consulta
     try {
-        //Creamos la consulta
         $consulta = "select * from usuarios";
         $resultado = mysqli_query($conexion, $consulta);
     } catch (Exception $e) {
         mysqli_close($conexion);
-        die("<p>No ha realizarse la consulta: " . $e->getMessage() . "</p>");
+        die("<p>No se ha podido realizar la consulta: " . $e->getMessage() . "</p></body></html>");
     }
 
-
     echo "<table>";
-    echo "<tr><th>Nombre de usuario</th><th>Borrar</th><th>Editar</th></tr>";
-    while($tupla=mysqli_fetch_assoc($resultado)){
+    echo "<tr><th>Nombre de Usuario</th><th>Borrar</th><th>Editar</th></tr>";
+    while ($tupla = mysqli_fetch_assoc($resultado)) {
         echo "<tr>";
-        echo "<td>".$tupla["nombre"]."</td>";
-        echo "<td><img src='images/borrar.png' alt='Borrar usuario'></td>";
-        echo "<td><img src='images/editar.png' alt='Editar usuario'></td>";
+        echo "<td><form action='index.php' method='post'><button class='enlace' type='submit' value='" . $tupla["id_usuario"] . "' name='btnDetalle' title='Detalles del Usuario'>" . $tupla["nombre"] . "</button></form></td>";
+        echo "<td><form action='index.php' method='post'><input type='hidden' name='nombre_usuario' value='" . $tupla["nombre"] . "'><button class='enlace' type='submit' value='" . $tupla["id_usuario"] . "' name='btnBorrar'><img src='images/borrar.png' alt='Imagen de Borrar' title='Borrar Usuario'></button></form></td>";
+        echo "<td><form action='index.php' method='post'><button class='enlace' type='submit' value='" . $tupla["id_usuario"] . "' name='btnEditar'><img src='images/editar.png' alt='Imagen de Editar' title='Editar Usuario'></button></form></td>";
         echo "</tr>";
     }
     echo "</table>";
-    ?>
-    <form action="usuario_nuevo.php" method="post">
-
-        <button type="submit" name="btnNuevoUsuario">Nuevo usuario</button>
-    </form>
-    <?php
     mysqli_free_result($resultado);
-    //Nos aseguramos que después cierre la conexión
-    mysqli_close($conexion);
-    ?>
 
+    if (isset($_POST["btnDetalle"])) {
+        echo "<h3>Detalles del usuario con id: " . $_POST["btnDetalle"] . "</h3>";
+        try {
+            $consulta = "select * from usuarios where id_usuario='" . $_POST["btnDetalle"] . "'";
+            $resultado = mysqli_query($conexion, $consulta);
+        } catch (Exception $e) {
+            mysqli_close($conexion);
+            die("<p>No se ha podido realizar la consulta: " . $e->getMessage() . "</p></body></html>");
+        }
+
+        if (mysqli_num_rows($resultado) > 0) {
+            $datos_usuario = mysqli_fetch_assoc($resultado);
+            mysqli_free_result($resultado);
+
+            echo "<p>";
+            echo "<strong>Nombre: </strong>" . $datos_usuario["nombre"] . "<br>";
+            echo "<strong>Usuario: </strong>" . $datos_usuario["usuario"] . "<br>";
+            echo "<strong>Email: </strong>" . $datos_usuario["email"];
+            echo "</p>";
+        } else
+            echo "<p>El usuario seleccionado ya no se encuentra registrado en la BD</p>";
+
+
+        echo "<form action='index.php' method='post'>";
+        echo "<p><button type='submit'>Volver</button></p>";
+        echo "</form>";
+    } elseif (isset($_POST["btnBorrar"])) {
+        echo "<p>Se dispone usted a borrar a usuario <strong>" . $_POST["nombre_usuario"] . "</strong></p>";
+        echo "<form action='index.php' method='post'>";
+        echo "<p><button type='submit' name='btnContBorrar' value='" . $_POST["btnBorrar"] . "'>Continuar</button> ";
+        echo "<button type='submit'>Atrás</button></p>";
+        echo "</form>";
+    } elseif (isset($_POST["btnEditar"])) {
+        echo "<h3>Editando el usuario con id: " . $_POST["btnEditar"] . "</h3>";
+        try {
+            $consulta = "select * from usuarios where id_usuario='" . $_POST["btnEditar"] . "'";
+            $resultado = mysqli_query($conexion, $consulta);
+        } catch (Exception $e) {
+            mysqli_close($conexion);
+            die("<p>No se ha podido realizar la consulta: " . $e->getMessage() . "</p></body></html>");
+        }
+
+        if (mysqli_num_rows($resultado) > 0) {
+            $datos_usuario = mysqli_fetch_assoc($resultado);
+            mysqli_free_result($resultado);
+            
+            if(!isset($_POST["btnContinuarEditar"])){
+                $error_nombre_edit=$_POST["nombreEdit"]=="";
+                
+            echo "<form action='index.php' method='post'>";
+            echo "<p><label for='nombreEdit'>Nombre:</label>";
+            echo "<input type='text' name='nombreEdit' id='nombreEdit'  value='" . $datos_usuario["nombre"] . "'></p>";
+            echo "<p><label for='usuarioEdit'>Usuario:</label>";
+            echo "<input type='text' name='usuarioEdit' id='usuarioEdit'  value='" . $datos_usuario["usuario"] . "'></p>";
+            echo "<p><label for='claveEdit'>Contraseña: </label>";
+            echo "<input type='password' name='claveEdit' id='claveEdit'  value='" . $datos_usuario["clave"] . "'></p>";
+            echo "<p><label for='emailEdit'>email: </label>";
+            echo "<input type='text' name='emailEdit' id='emailEdit'  value='" . $datos_usuario["email"] . "'></p>";
+            echo "<p><button type='submit' name='btnContinuarEditar'>Continuar</button><button type='submit' name='btnVolverEditar'>Volver</button></p>";
+            
+            }else{
+                if(!$error_form_edit){
+
+                }
+            }
+        } else
+           
+        echo "</form>";
+    } else {
+        echo "</form>";
+    }
+
+
+    mysqli_close($conexion);
+
+    ?>
 </body>
 
 </html>
