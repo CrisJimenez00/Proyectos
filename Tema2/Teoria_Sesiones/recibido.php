@@ -1,8 +1,8 @@
 <?php
 session_start();
 if (isset($_POST["btnBorrarSesion"])) {
-    //session_destroy()-->Lo elimina pero lo muestra una vez
-    session_unset();
+    //session_destroy() -->Lo elimina pero no lo muestra
+    session_unset();//-->Lo elimina pero lo muestra una vez
 }
 ?>
 <!DOCTYPE html>
