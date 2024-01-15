@@ -1,7 +1,5 @@
 <?php
-
-define("MINUTOS",1);
-//CTES base de datos
+define("MINUTOS",5);
 
 define("SERVIDOR_BD","localhost");
 define("USUARIO_BD","jose");
@@ -12,7 +10,7 @@ define("NOMBRE_BD","bd_foro");
 function error_page($title,$body)
 {
     $page='<!DOCTYPE html>
-    <html lang="en">
+    <html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,5 +20,4 @@ function error_page($title,$body)
     </html>';
     return $page;
 }
-
 ?>
