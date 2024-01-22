@@ -37,10 +37,10 @@
         die("<p>Error consumiendo el servicio web: " . $url . "</p>" . $respuesta);
     }
     echo "<p>El saludo recibido ha sido: <strong>" . $obj->mensaje . "</strong></p>";
-    
-    
+
+
     //-----------------------------------------------
-    
+
     //Ejemplo con variable
     $url = DIR_SERV . "/saludo/Manoli";
     $respuesta = consumir_servicios_REST($url, "GET");
@@ -49,28 +49,28 @@
         die("<p>Error consumiendo el servicio web: " . $url . "</p>" . $respuesta);
     }
     echo "<p>El saludo recibido ha sido: <strong>" . $obj->mensaje . "</strong></p>";
-    
+
     //-----------------------------------
 
     //Ejemplo con variable con espacio(así aunque haya espacios lo lee como url)
-    $url = DIR_SERV . "/saludo/".urlencode("Manoli Josefa");
+    $url = DIR_SERV . "/saludo/" . urlencode("Manoli Josefa");
     $respuesta = consumir_servicios_REST($url, "GET");
     $obj = json_decode($respuesta);
     if (!$obj) {
         die("<p>Error consumiendo el servicio web: " . $url . "</p>" . $respuesta);
     }
     echo "<p>El saludo recibido ha sido: <strong>" . $obj->mensaje . "</strong></p>";
-    
+
     //-------------------------------POST----------------------------------------
     $url = DIR_SERV . "/saludo";
-    $datos["nombre"]="Pepito";
+    $datos["nombre"] = "Pepito";
     $respuesta = consumir_servicios_REST($url, "POST", $datos);
     $obj = json_decode($respuesta);
     if (!$obj) {
         die("<p>Error consumiendo el servicio web: " . $url . "</p>" . $respuesta);
     }
     echo "<p>El saludo recibido ha sido: <strong>" . $obj->mensaje . "</strong></p>";
-    
+
 
     //----------------------------------DELETE-------------------------------
     $url = DIR_SERV . "/borrar_saludo/37";
@@ -83,7 +83,7 @@
 
     //---------------------------PUT---------------------
     $url = DIR_SERV . "/actualizar_saludo/78";
-    $datos["nombre"]="Juanita";
+    $datos["nombre"] = "Juanita";
     $respuesta = consumir_servicios_REST($url, "PUT", $datos);
     $obj = json_decode($respuesta);
     if (!$obj) {
