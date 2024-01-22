@@ -61,7 +61,7 @@ $app->delete('/borrar_saludo/{id}',function($request){
 });
 
 //---------------------------PUT--------------------
-$app->post('/actualizar_saludo',function($request){
+$app->put('/actualizar_saludo/{id}',function($request){
 
     $id_recibido=$request->getAttribute('id');
     $nombre_nuevo=$request->getParam('nombre');
