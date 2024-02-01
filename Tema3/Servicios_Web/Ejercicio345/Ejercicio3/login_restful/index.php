@@ -1,7 +1,5 @@
 <?php
 require "src/funciones_ctes.php";
-
-
 require __DIR__ . '/Slim/autoload.php';
 
 $app = new \Slim\App;
@@ -11,6 +9,7 @@ $app->get('/usuarios', function () {
 
     echo json_encode(obtener_usuarios());
 });
+
 $app->get('/usuarios', function ($request) {
     $api_key = $request->gestParam("api_key");
     session_id($api_key);
@@ -60,6 +59,7 @@ $app->post('/login', function ($request) {
 
     echo json_encode(login($usuario, $clave));
 });
+
 $app->post('/logueado', function ($request) {
     $api_key = $request->gestParam("api_key");
     session_id($api_key);
@@ -143,6 +143,7 @@ $app->get('/repetido/{tabla}/{columna}/{valor}/{columna_id}/{valor_id}', functio
         echo json_encode(array("no_login" => "No tienes permisos para usar este servicio"));
     }
 });
+
 $app->post('/salir', function ($request) {
     session_id($request->getParam('api_key'));
     session_start();
